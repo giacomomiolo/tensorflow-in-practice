@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/giacomomiolo/tensorflow-in-practice/blob/master/tensorflow.gif" alt="TensorFlow" />
+  <img height="200" src="https://github.com/giacomomiolo/tensorflow-in-practice/blob/master/tensorflow.gif" alt="TensorFlow" />
 </p>
 
 # [Tensorflow in Practice Specialization](https://www.coursera.org/specializations/tensorflow-in-practice)
