@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="https://github.com/giacomomiolo/tensorflow-in-practice/blob/master/tensorflow-logo.png" width="562" height="106" alt="TensorFlow">
+  <img width="562" height="106" src="https://github.com/giacomomiolo/tensorflow-in-practice/blob/master/tensorflow-logo.png" alt="TensorFlow">
 </p>
+
 # [Tensorflow in Practice Specialization](https://www.coursera.org/specializations/tensorflow-in-practice)
 **Certification of the entire specialization**: in progress
 
