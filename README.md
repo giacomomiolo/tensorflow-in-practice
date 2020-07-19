@@ -1,3 +1,4 @@
+<img align="center" src="https://github.com/giacomomiolo/tensorflow-in-practice/blob/master/tensorflow-logo.png" alt="TensorFlow"></img>
 # [Tensorflow in Practice Specialization](https://www.coursera.org/specializations/tensorflow-in-practice)
 **Certification of the entire specialization**: in progress
 
