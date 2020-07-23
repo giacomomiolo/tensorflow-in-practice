@@ -8,3 +8,5 @@ class ShowTime(Callback):
         print(f"Training started at: {datetime.datetime.now().time()}")
     def on_train_end(self, logs=None):
         print(f"Training ended at: {datetime.datetime.now().time()}")
+
+
