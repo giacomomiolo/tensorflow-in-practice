@@ -2,7 +2,7 @@ import tensorflow as tf
 from tensorflow.keras.datasets import fashion_mnist
 from tensorflow import keras
 from tensorflow.keras.layers import Dense, Conv2D, Activation, Flatten, MaxPooling2D, Dropout
-from kerastuner.tuners import RandomSearch
+from kerastuner.tuners import RandomSearch, Hyperband
 from kerastuner.engine.hyperparameters import HyperParameters
 from tensorflow.keras.callbacks import TensorBoard
 
@@ -32,7 +32,6 @@ class ShowTime(tf.keras.callbacks.Callback):
         print(f"Training ended at: {datetime.datetime.now().time()}")
 
 
-
 def build_model(hp):
     model = keras.models.Sequential()
 
@@ -48,10 +47,10 @@ def build_model(hp):
     model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
 
     #model.add(Dense(hp.Int(f"dense_{i}_units", min_value=4, max_value=32, step=4)))
-    model.add(Dense(hp.Choice('dense_units', values=[10, 20, 30])))
+    model.add(Dense(hp.Choice('dense_units', values=[0, 10])))
     model.add(Activation("softmax"))
-
-    model.compile(optimizer="adam",
+    #lr = hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])
+    model.compile(optimizer=tf.keras.optimizers.Adam(),
                # optimizer=keras.optimizers.Adam(
                # hp.Choice('learning_rate', values=[1e-2, 1e-3, 1e-4])),
                 loss="sparse_categorical_crossentropy",
@@ -59,18 +58,24 @@ def build_model(hp):
     return model
 
 import datetime
-import time
 import os
 LOG_DIR = f"{os.getcwd()}/logs/{datetime.datetime.now().strftime('%m.%d-%H.%M')}"
 tensorboard = TensorBoard(log_dir=LOG_DIR)
 showtime = ShowTime()
 my_callbacks = [tensorboard, showtime]
 
-tuner = RandomSearch(
+# tuner = RandomSearch(
+#     build_model,
+#     objective = "val_accuracy",
+#     max_trials = 1,
+#     executions_per_trial = 1,
+#     directory = LOG_DIR
+# )
+
+tuner = Hyperband(
     build_model,
     objective = "val_accuracy",
-    max_trials = 1,
-    executions_per_trial = 1,
+    max_epochs = 2,
     directory = LOG_DIR
 )
 
@@ -82,6 +87,7 @@ tuner.search(
     epochs = 1,
     batch_size = 64,
     callbacks=[my_callbacks],
+    use_multiprocessing=True,
     validation_data = (X_test, y_test)
 )
 
@@ -89,9 +95,17 @@ tuner.results_summary()
 
 import pickle
 
-# Writing pickle
-with open(f"tuner_{int(time.time())}.pkl", "wb") as f:
+# Writing tuner object to pickle
+with open(f"tuner_{datetime.datetime.now().strftime('%m.%d-%H.%M')}.pkl", "wb") as f:
     pickle.dump(tuner, f)
+
+# Writing best model to .h5 model
+MODEL_DIR = f"{os.getcwd()}/models/"
+best_model = tuner.get_best_models()[0]
+best_model.save(f"best_model.h5")
+
+# best_model_loaded = keras.models.load_model(f"best_model.h5")
+# best_model_loaded.fit(X_test, y_test)
 
 # Reading pickle
 # tuner = pickle.load(open("tuner_....pkl", "rb"))
