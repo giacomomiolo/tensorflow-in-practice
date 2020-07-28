@@ -65,18 +65,3 @@ test_loss, test_acc = model.evaluate(X_test,  y_test, verbose=2)
 print("\nTest accuracy: {test_acc}")
 
 model.save(f"fashion_mnist_model.h5")
-
-
-
-# Writing best model to .h5 model
-
-
-# best_model_loaded = keras.models.load_model(f"best_model.h5")
-# best_model_loaded.fit(X_test, y_test)
-
-# Reading pickle
-# tuner = pickle.load(open("tuner_....pkl", "rb"))
-
-# print(f"Tuner hyperparams:\n{tuner.get_best_hyperparameters()[0].values")
-# print(tuner.results_summary())
-# print(tuner.get_best_models()[0].summary())
